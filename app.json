@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "name": "React-Native-To-Do-List-Application",
+    "slug": "React-Native-To-Do-List-Application"
+  }
+}

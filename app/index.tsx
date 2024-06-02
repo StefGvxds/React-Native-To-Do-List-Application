@@ -12,7 +12,7 @@ import { Stack, useRouter } from "expo-router";
 import { createInterface } from "readline/promises";
 import { StyleSheet } from "react-native";
 
-export default function Home() {
+export default function Login() {
   const router = useRouter();
 
   //Change Button-style when button is pressed
@@ -67,6 +67,7 @@ export default function Home() {
   );
 }
 
+//Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -79,14 +80,14 @@ const styles = StyleSheet.create({
     padding: 5,
     borderWidth: 1,
     borderColor: "#546E7A",
-    width: "20%",
+    width: "40%",
     textAlign: "center",
     marginTop: 20,
     borderRadius: 4,
     height: 40,
   },
   button: {
-    width: "20%",
+    width: "40%",
     height: 40,
     marginTop: 20,
     alignItems: "center",

@@ -15,6 +15,20 @@ import { StyleSheet } from "react-native";
 export default function Home() {
   const router = useRouter();
 
+  //Change Button-style when button is pressed
+  const [buttonStyleOnPress, setButtonStyleOnPress] = useState(false);
+
+  //Change Boolean Status when Button is pressed False -> True || True -> False
+  function handleButtonStyleOnPress() {
+    setButtonStyleOnPress((pressed) => !pressed);
+  }
+
+  //Change the Button Style when buttonStyleOnPress === True
+  const buttonStyle = {
+    ...styles.button,
+    backgroundColor: buttonStyleOnPress ? "blue" : "#546E7A",
+  };
+
   return (
     <View>
       <Text
@@ -25,9 +39,8 @@ export default function Home() {
           color: "#546E7A",
         }}
       >
-        To-Do-Application
+        ToDo-Application
       </Text>
-      <Text style={styles.text}>Login</Text>
 
       <View style={styles.container}>
         <TextInput
@@ -40,7 +53,13 @@ export default function Home() {
           secureTextEntry={true}
           style={(styles.text, styles.textInput)}
         />
-        <Pressable style={styles.button}>
+        <Pressable
+          //When press button in, change the button style
+          onPressIn={handleButtonStyleOnPress}
+          //When press button out, change the button style back
+          onPressOut={handleButtonStyleOnPress}
+          style={buttonStyle}
+        >
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
       </View>
@@ -53,11 +72,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center", // Vertikal zentrieren
     alignItems: "center", // Horizontal zentrieren
-  },
-  text: {
-    fontSize: 25,
-    textAlign: "center",
-    color: "#546E7A",
   },
   textInput: {
     fontSize: 25,

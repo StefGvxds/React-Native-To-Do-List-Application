@@ -20,16 +20,18 @@ export default function App() {
   }, [isLoggedIn]);
 
   return (
-    <NavigationContainer>
-      {isLoggedIn ? (
-        <Tab.Navigator>
-          <Tab.Screen name="AddTodo" component={AddTodo} />
-          <Tab.Screen name="TodoList" component={TodoList} />
-        </Tab.Navigator>
-      ) : (
+    <>
+      {!isLoggedIn ? (
         <LoginScreen setLoggedInStatus={handleIsLoggedIn} />
+      ) : (
+        <NavigationContainer>
+          <Tab.Navigator>
+            <Tab.Screen name="AddTodo" component={AddTodo} />
+            <Tab.Screen name="TodoList" component={TodoList} />
+          </Tab.Navigator>
+        </NavigationContainer>
       )}
-    </NavigationContainer>
+    </>
   );
 }
 

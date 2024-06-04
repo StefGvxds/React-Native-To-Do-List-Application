@@ -1,7 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  StyleSheet,
+  Alert,
+  Platform,
+} from "react-native";
 
 export default function LoginScreen({ setLoggedInStatus }) {
+  // __________________________________________HANDLE WEB Alerts_____________________________________
+  const alertPolyfill = (title, description, options, extra) => {
+    const result = window.confirm(
+      [title, description].filter(Boolean).join("\n")
+    );
+
+    if (result) {
+      const confirmOption = options.find(({ style }) => style !== "cancel");
+      confirmOption && confirmOption.onPress();
+    } else {
+      const cancelOption = options.find(({ style }) => style === "cancel");
+      cancelOption && cancelOption.onPress();
+    }
+  };
+  const alert = Platform.OS === "web" ? alertPolyfill : Alert.alert;
+
   // __________________________________________HANDLE LOGIN_____________________________________
   //Username and Password
   const [username, setUsername] = useState("");
@@ -23,24 +47,24 @@ export default function LoginScreen({ setLoggedInStatus }) {
 
   //Function to handle the login
   async function handleLogin() {
-    try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-      const data = await response.json();
-      if (data.username === username && data.password === password) {
-        setLoggedInStatus(true);
-      } else {
-        Alert.alert("Login failed", "Invalid username or password");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      Alert.alert("Login failed", "An error occurred. Please try again.");
-    }
+    //   try {
+    //     const response = await fetch(endpoint, {
+    //       method: "GET",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     });
+    //     const data = await response.json();
+    //     if (data.username === username && data.password === password) {
+    //       setLoggedInStatus(true);
+    //     } else {
+    //       alert("Ooops!", "Invalid password or username", [{ text: "ok" }]);
+    //     }
+    //   } catch (error) {
+    //     console.error("Error:", error);
+    //   }
+
+    setLoggedInStatus(true);
   }
 
   // __________________________________________HANDLE LOGIN Button_____________________________________
@@ -75,7 +99,7 @@ export default function LoginScreen({ setLoggedInStatus }) {
       <View style={styles.container}>
         <TextInput
           placeholder="Username"
-          style={(styles.text, styles.textInput)}
+          style={styles.textInput}
           value={username}
           onChangeText={handleUsername}
         />
@@ -83,7 +107,7 @@ export default function LoginScreen({ setLoggedInStatus }) {
         <TextInput
           placeholder="Password"
           secureTextEntry={true}
-          style={(styles.text, styles.textInput)}
+          style={styles.textInput}
           value={password}
           onChangeText={handlePassword}
         />

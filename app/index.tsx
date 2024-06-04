@@ -16,10 +16,6 @@ export default function App() {
     setIsLoggedIn(islogedIn);
   }
 
-  useEffect(() => {
-    console.log("Has the right to log in: ", isLoggedIn);
-  }, [isLoggedIn]);
-
   return (
     <>
       {!isLoggedIn ? (

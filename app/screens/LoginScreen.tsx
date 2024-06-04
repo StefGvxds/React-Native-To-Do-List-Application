@@ -22,27 +22,25 @@ export default function LoginScreen({ setLoggedInStatus }) {
   }
 
   //Function to handle the login
-  function handleLogin() {
-    // try {
-    //   const response = await fetch(endpoint, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ username, password }),
-    //   });
-    //   const data = await response.json();
-    //   if (data.username === username && data.password === password) {
-    //     setLoggedInStatus(true);
-    //   } else {
-    //     Alert.alert("Login failed", "Invalid username or password");
-    //   }
-    // } catch (error) {
-    //   console.error("Error:", error);
-    //   Alert.alert("Login failed", "An error occurred. Please try again.");
-    // }
-
-    setLoggedInStatus(true);
+  async function handleLogin() {
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+      if (data.username === username && data.password === password) {
+        setLoggedInStatus(true);
+      } else {
+        Alert.alert("Login failed", "Invalid username or password");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      Alert.alert("Login failed", "An error occurred. Please try again.");
+    }
   }
 
   // __________________________________________HANDLE LOGIN Button_____________________________________

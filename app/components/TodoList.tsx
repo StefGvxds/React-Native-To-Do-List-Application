@@ -16,8 +16,8 @@ class TodoList extends Component {
   renderItem = ({ item }) => (
     <View>
       <Text>{item.text}</Text>
-      <Button title="Edit" onPress={() => this.handleEdit(item.id)} />
-      <Button title="Delete" onPress={() => this.handleDelete(item.id)} />
+      {/* <Button title="Edit" onPress={() => this.handleEdit(item.id)} /> */}
+      {/* <Button title="Delete" onPress={() => this.handleDelete(item.id)} /> */}
     </View>
   );
 
@@ -25,11 +25,11 @@ class TodoList extends Component {
     return (
       <View>
         <Text>To-Do List</Text>
-        <FlatList
-          data={this.state.todos}
+        {/* <FlatList
+          //data={this.state.todos}
           renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
-        />
+        /> */}
       </View>
     );
   }

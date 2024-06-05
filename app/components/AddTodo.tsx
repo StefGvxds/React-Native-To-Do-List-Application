@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Pressable,
+  Button,
+} from "react-native";
+import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import notifee, { TimestampTrigger, TriggerType } from "@notifee/react-native";
+import notifee, { AuthorizationStatus } from "@notifee/react-native";
 
 export default function AddTodo() {
   // __________________________________________HANDLE LOGIN Button_____________________________________
@@ -35,19 +43,69 @@ export default function AddTodo() {
     };
 
     // Notification
-    // await notifee.scheduleNotification({
-    //   content: {
-    //     title: "New ToDO",
-    //     body: `You have a new ToDo: ${input}`,
-    //   },
-    //   trigger: {
-    //     secondsFromNow: 150,
-    //   },
-    // });
+    // try {
+    //   // Schedule notification
+    //   await notifee.scheduleNotification({
+    //     content: {
+    //       title: "New ToDo",
+    //       body: `You have a new ToDo: ${input}`,
+    //     },
+    //     trigger: {
+    //       seconds: 5,
+    //     },
+    //   });
+    // } catch (error) {
+    //   console.error("Notification error:", error);
+    // }
 
     // Reset Todo input
     setInput("");
   }
+
+  async function onDisplayNotification() {
+    // Request permissions (required for iOS)
+    await notifee.requestPermission();
+
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: "default",
+      name: "Default Channel",
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: "Notification Title",
+      body: "Main body content of the notification",
+      android: {
+        channelId,
+        smallIcon: "name-of-a-small-icon", // optional, defaults to 'ic_launcher'.
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: "default",
+        },
+      },
+    });
+  }
+
+  // useEffect(() => {
+  //   async function requestPermissions() {
+  //     const settings = await notifee.requestPermission();
+
+  //     if (settings.authorizationStatus === AuthorizationStatus.DENIED) {
+  //       console.log("User declined permissions");
+  //     } else if (
+  //       settings.authorizationStatus === AuthorizationStatus.AUTHORIZED
+  //     ) {
+  //       console.log("Permission settings:", settings);
+  //     } else if (
+  //       settings.authorizationStatus === AuthorizationStatus.PROVISIONAL
+  //     ) {
+  //       console.log("Provisional permissions granted");
+  //     }
+  //   }
+
+  //   requestPermissions();
+  // }, []);
 
   //Check Notification Permission
   // async function onAppBootstrap() {
@@ -57,17 +115,18 @@ export default function AddTodo() {
 
   return (
     <View>
-      <Text
-        style={{
-          fontSize: 40,
-          textAlign: "center",
-          padding: 20,
-          color: "#546E7A",
-        }}
-      >
-        Add a new To-Do
-      </Text>
-
+      <View style={{ marginBottom: 100 }}>
+        <Text
+          style={{
+            fontSize: 40,
+            textAlign: "center",
+            padding: 20,
+            color: "#546E7A",
+          }}
+        >
+          Add a new To-Do
+        </Text>
+      </View>
       <View style={styles.container}>
         <TextInput
           placeholder="What have you ToDo?"
@@ -85,6 +144,11 @@ export default function AddTodo() {
         >
           <Text style={styles.buttonText}>Add To-Do</Text>
         </Pressable>
+      </View>
+
+      {/* TestButton */}
+      <View style={{ marginTop: 200 }}>
+        <Button onPress={onDisplayNotification} title="Click Me" />
       </View>
     </View>
   );
@@ -125,6 +189,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-//1. run it on IOS and Android
 //2. Where to save
 //1. Add Notifee

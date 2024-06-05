@@ -85,16 +85,18 @@ export default function LoginScreen({ setLoggedInStatus }) {
 
   return (
     <View>
-      <Text
-        style={{
-          fontSize: 40,
-          textAlign: "center",
-          padding: 20,
-          color: "#546E7A",
-        }}
-      >
-        ToDo-Application
-      </Text>
+      <View style={{ marginBottom: 100 }}>
+        <Text
+          style={{
+            fontSize: 40,
+            textAlign: "center",
+            padding: 20,
+            color: "#546E7A",
+          }}
+        >
+          ToDo-Application
+        </Text>
+      </View>
 
       <View style={styles.container}>
         <TextInput

@@ -125,6 +125,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-
+//1. run it on IOS and Android
 //2. Where to save
 //1. Add Notifee

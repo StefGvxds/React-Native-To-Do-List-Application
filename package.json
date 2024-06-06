@@ -13,7 +13,7 @@
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@types/react": "~18.2.79",
-    "expo": "^51.0.0",
+    "expo": "^51.0.10",
     "expo-constants": "~16.0.1",
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.15",
@@ -32,7 +32,8 @@
     "typescript": "~5.3.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@types/uuid": "^9.0.8"
   },
   "private": true
 }

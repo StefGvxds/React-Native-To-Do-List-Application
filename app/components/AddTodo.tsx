@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import { Notifee } from "@notifee/react-native";
+import Notifee from "@notifee/react-native";
 
 export default function AddTodo() {
   // __________________________________________HANDLE LOGIN Button_____________________________________
@@ -31,7 +31,7 @@ export default function AddTodo() {
 
   const [input, setInput] = useState("");
 
-  function handleInput(newInput) {
+  function handleInput(newInput: string) {
     setInput((prevInput) => newInput);
   }
 

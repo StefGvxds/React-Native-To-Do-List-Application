@@ -12,7 +12,7 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   //Function to change LoggedIn status
-  function handleIsLoggedIn(islogedIn) {
+  function handleIsLoggedIn(islogedIn: boolean) {
     setIsLoggedIn(islogedIn);
   }
 

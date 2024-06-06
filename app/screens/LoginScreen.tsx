@@ -11,6 +11,8 @@ import {
 
 export default function LoginScreen({ setLoggedInStatus }) {
   // __________________________________________HANDLE WEB Alerts_____________________________________
+
+  //Check if OS === WEB to show Alerts to the WEB environment
   const alertPolyfill = (title, description, options, extra) => {
     const result = window.confirm(
       [title, description].filter(Boolean).join("\n")
@@ -35,12 +37,12 @@ export default function LoginScreen({ setLoggedInStatus }) {
   const endpoint = "https://api.npoint.io/f74e690311e2654a5f8f";
   // const { usernameAPI, passwordAPI } = endpoint;
 
-  //Function to handle change Username
+  //Function to handle change Username-Input
   function handleUsername(newUsername) {
     setUsername((prevUsername) => newUsername);
   }
 
-  //Function to handle change Password
+  //Function to handle change Password-Input
   function handlePassword(newPassword) {
     setPassword((prevPassword) => newPassword);
   }

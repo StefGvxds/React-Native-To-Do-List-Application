@@ -12,15 +12,15 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <>
-      {!isLoggedIn ? (
-        <LoginScreen setLoggedInStatus={handleIsLoggedIn} />
-      ) : (
-        <Tab.Navigator>
-          <Tab.Screen name="AddTodo" component={AddTodo} />
-          <Tab.Screen name="TodoList" component={TodoList} />
-        </Tab.Navigator>
-      )}
-    </>
+    // <>
+    //   {!isLoggedIn ? (
+    //     <LoginScreen setLoggedInStatus={handleIsLoggedIn} />
+    //   ) : (
+    <Tab.Navigator>
+      <Tab.Screen name="AddTodo" component={AddTodo} />
+      <Tab.Screen name="TodoList" component={TodoList} />
+    </Tab.Navigator>
+    //   )}
+    // </>
   );
 }

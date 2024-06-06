@@ -41,43 +41,38 @@ export default function AddTodo() {
   }
 
   async function handleAddTodo() {
-    //Create a new Todo-Object
-    const newTodo = {
-      date: new Date().toISOString(),
-      title: input,
-      task_id: uuidv4(),
-      has_reminder: reminder,
-    };
-
-    if (newTodo.title !== "") {
-      try {
-        // Fetch existing data from the API
-        const response = await fetch(
-          "https://api.npoint.io/3dbe9481cd6175f6ffd8"
-        );
-        const existingTodos = await response.json();
-
-        // Add new Todo to the existing list
-        const updatedTodos = [...existingTodos, newTodo];
-
-        // Send updated list back to the API
-        await fetch("https://api.npoint.io/3dbe9481cd6175f6ffd8", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedTodos),
-        });
-
-        // Reset Todo input
-        setInput("");
-      } catch (error) {
-        console.error("Error adding new todo:", error);
-      }
-    }
-
-    // Reset Todo input
-    setInput("");
+    // //Create a new Todo-Object
+    // const newTodo = {
+    //   date: new Date().toISOString(),
+    //   title: input,
+    //   task_id: uuidv4(),
+    //   has_reminder: reminder,
+    // };
+    // if (newTodo.title !== "") {
+    //   try {
+    //     // Fetch existing data from the API
+    //     const response = await fetch(
+    //       "https://api.npoint.io/3dbe9481cd6175f6ffd8"
+    //     );
+    //     const existingTodos = await response.json();
+    //     // Add new Todo to the existing list
+    //     const updatedTodos = [...existingTodos, newTodo];
+    //     // Send updated list back to the API
+    //     await fetch("https://api.npoint.io/3dbe9481cd6175f6ffd8", {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(updatedTodos),
+    //     });
+    //     // Reset Todo input
+    //     setInput("");
+    //   } catch (error) {
+    //     console.error("Error adding new todo:", error);
+    //   }
+    // }
+    // // Reset Todo input
+    // setInput("");
   }
 
   return (

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import notifee from "@notifee/react-native";
+//import notifee from "@notifee/react-native";
 
 export default function AddTodo() {
   // __________________________________________HANDLE LOGIN Button_____________________________________
@@ -30,47 +30,56 @@ export default function AddTodo() {
   // __________________________________________HANDLE Add ToDoObject_____________________________________
 
   const [input, setInput] = useState("");
+  const [reminder, setReminder] = useState(true);
 
   function handleInput(newInput: string) {
     setInput((prevInput) => newInput);
   }
 
+  function handleReminder() {
+    setReminder((prevReminder) => !prevReminder);
+  }
+
   async function handleAddTodo() {
     //Create a new Todo-Object
     const newTodo = {
-      id: uuidv4(),
-      text: input,
-      completed: false,
+      date: new Date().toISOString(),
+      title: input,
+      task_id: uuidv4(),
+      has_reminder: reminder,
     };
+
+    if (newTodo.title !== "") {
+      try {
+        // Fetch existing data from the API
+        const response = await fetch(
+          "https://api.npoint.io/3dbe9481cd6175f6ffd8"
+        );
+        const existingTodos = await response.json();
+
+        // Add new Todo to the existing list
+        const updatedTodos = [...existingTodos, newTodo];
+
+        // Send updated list back to the API
+        await fetch("https://api.npoint.io/3dbe9481cd6175f6ffd8", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedTodos),
+        });
+
+        // Reset Todo input
+        setInput("");
+      } catch (error) {
+        console.error("Error adding new todo:", error);
+      }
+    }
 
     // Reset Todo input
     setInput("");
   }
 
-  async function onDisplayNotification() {
-    // Request permissions (required for iOS)
-    await notifee.requestPermission();
-
-    // Create a channel (required for Android)
-    const channelId = await notifee.createChannel({
-      id: "default",
-      name: "Default Channel",
-    });
-
-    // Display a notification
-    await notifee.displayNotification({
-      title: "Notification Title",
-      body: "Main body content of the notification",
-      android: {
-        channelId,
-        //smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
-        // pressAction is needed if you want the notification to open the app when pressed
-        pressAction: {
-          id: "default",
-        },
-      },
-    });
-  }
   return (
     <View>
       <View style={{ marginBottom: 100 }}>
@@ -87,7 +96,7 @@ export default function AddTodo() {
       </View>
       <View style={styles.container}>
         <TextInput
-          placeholder="What have you ToDo?"
+          placeholder="Your ToDo"
           style={styles.textInput}
           value={input}
           onChangeText={handleInput}
@@ -145,5 +154,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-//2. Where to save
-//1. Add Notifee

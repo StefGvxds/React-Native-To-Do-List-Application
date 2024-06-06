@@ -9,7 +9,12 @@ import {
 } from "react-native";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import notifee, { AuthorizationStatus } from "@notifee/react-native";
+import notifee, {
+  AndroidImportance,
+  AndroidStyle,
+  AndroidVisibility,
+  EventType,
+} from "@notifee/react-native";
 
 export default function AddTodo() {
   // __________________________________________HANDLE LOGIN Button_____________________________________
@@ -36,11 +41,40 @@ export default function AddTodo() {
   }
 
   async function handleAddTodo() {
+    //Create a new Todo-Object
     const newTodo = {
       id: uuidv4(),
       text: input,
       completed: false,
     };
+
+    //Request permission for displaying notifications for IOS
+    await notifee.requestPermission();
+
+    //create a notification channel, which is required for Android
+    const channelId = await notifee.createChannel({
+      id: "unique_channel_id",
+      name: "Channel Name",
+      sound: "default",
+      importance: AndroidImportance.HIGH,
+      visibility: AndroidVisibility.PUBLIC,
+      vibration: true,
+    });
+
+    //proceed to display a notification
+    await notifee.displayNotification({
+      id: channelId,
+      title: "Notification Title",
+      body: "Notification Body",
+      android: {
+        channelId,
+        largeIcon: "path_to_large_icon",
+        style: {
+          type: AndroidStyle.BIGTEXT,
+          text: "Additional text for expanded view",
+        },
+      },
+    });
 
     // Notification
     // try {
@@ -62,30 +96,30 @@ export default function AddTodo() {
     setInput("");
   }
 
-  async function onDisplayNotification() {
-    // Request permissions (required for iOS)
-    await notifee.requestPermission();
+  // async function onDisplayNotification() {
+  //   // Request permissions (required for iOS)
+  //   await notifee.requestPermission();
 
-    // Create a channel (required for Android)
-    const channelId = await notifee.createChannel({
-      id: "default",
-      name: "Default Channel",
-    });
+  //   // Create a channel (required for Android)
+  //   const channelId = await notifee.createChannel({
+  //     id: "default",
+  //     name: "Default Channel",
+  //   });
 
-    // Display a notification
-    await notifee.displayNotification({
-      title: "Notification Title",
-      body: "Main body content of the notification",
-      android: {
-        channelId,
-        smallIcon: "name-of-a-small-icon", // optional, defaults to 'ic_launcher'.
-        // pressAction is needed if you want the notification to open the app when pressed
-        pressAction: {
-          id: "default",
-        },
-      },
-    });
-  }
+  // Display a notification
+  //   await notifee.displayNotification({
+  //     title: "Notification Title",
+  //     body: "Main body content of the notification",
+  //     android: {
+  //       channelId,
+  //       smallIcon: "name-of-a-small-icon", // optional, defaults to 'ic_launcher'.
+  //       // pressAction is needed if you want the notification to open the app when pressed
+  //       pressAction: {
+  //         id: "default",
+  //       },
+  //     },
+  //   });
+  // }
 
   // useEffect(() => {
   //   async function requestPermissions() {
@@ -145,15 +179,13 @@ export default function AddTodo() {
           <Text style={styles.buttonText}>Add To-Do</Text>
         </Pressable>
       </View>
-
-      {/* TestButton */}
-      <View style={{ marginTop: 200 }}>
-        <Button onPress={onDisplayNotification} title="Click Me" />
-      </View>
     </View>
   );
 }
-
+//{/* TestButton */}
+//<View style={{ marginTop: 200 }}>
+//  <Button onPress={onDisplayNotification} title="Click Me" />
+//</View>
 //Styles
 const styles = StyleSheet.create({
   container: {

@@ -26,12 +26,32 @@ interface TodoItem {
 export default function ToDoList() {
   // __________________________________________Check if TODOS are already stored locally_____________________________________
   const [data, setData] = useState<TodoItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  function handleLoading() {
+    setLoading((prevStatus) => !prevStatus);
+  }
+
+  async function fetchData() {
+    handleLoading();
+    try {
+      const storedTodos = await AsyncStorage.getItem("todos");
+      let todos = [];
+      if (storedTodos !== null) {
+        todos = JSON.parse(storedTodos);
+      }
+      setData(todos); // Setzen der Daten sofort, um sicherzustellen, dass die UI aktualisiert wird
+      // Rest des Codes...
+    } catch (error) {
+      console.error("Error fetching or initializing todos:", error);
+      handleLoading();
+    }
+  }
 
   useFocusEffect(
     React.useCallback(() => {
       async function fetchData() {
-        setLoading(true);
+        handleLoading();
         try {
           const storedTodos = await AsyncStorage.getItem("todos");
           if (storedTodos !== null) {
@@ -45,10 +65,10 @@ export default function ToDoList() {
             await AsyncStorage.setItem("todos", JSON.stringify(initialTodos));
             setData(initialTodos);
           }
-          setLoading(false);
+          handleLoading();
         } catch (error) {
           console.error("Error fetching or initializing todos:", error);
-          setLoading(false);
+          handleLoading();
         }
       }
       fetchData();

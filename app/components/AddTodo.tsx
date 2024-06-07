@@ -6,11 +6,17 @@ import {
   StyleSheet,
   Pressable,
   Alert,
+  Platform,
 } from "react-native";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import DefaultPreference from "react-native-default-preference";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //import notifee from "@notifee/react-native";
+
+// type AddTodoProps = {
+//   setUpdateList: () => void;
+// };
+// export default function AddTodo({ setUpdateList }: AddTodoProps) {
 
 export default function AddTodo() {
   // __________________________________________HANDLE LOGIN Button_____________________________________
@@ -31,11 +37,16 @@ export default function AddTodo() {
 
   // __________________________________________HANDLE WEB Alerts_____________________________________
 
+  interface AlertOption {
+    style: "cancel" | string; // 'cancel' and other possible string values
+    onPress: () => void; // function that gets called when option is selected
+  }
+
   //Check if OS === WEB to show Alerts to the WEB environment
   const alertPolyfill = (
     title: string,
     description: string,
-    options,
+    options: AlertOption[],
     extra: string
   ) => {
     const result = window.confirm(
@@ -52,25 +63,6 @@ export default function AddTodo() {
   };
   const alert = Platform.OS === "web" ? alertPolyfill : Alert.alert;
 
-  // __________________________________________Check if TODOS are already stored locally_____________________________________
-
-  useEffect(() => {
-    // Check if todos are already stored locally
-    DefaultPreference.get("todos").then((storedTodos) => {
-      if (!storedTodos) {
-        // Fetch todos from the API and store them locally
-        fetch("https://api.npoint.io/3dbe9481cd6175f6ffd8")
-          .then((response) => response.json())
-          .then((todos) => {
-            DefaultPreference.set("todos", JSON.stringify(todos));
-          })
-          .catch((error) =>
-            console.error("Error fetching initial todos:", error)
-          );
-      }
-    });
-  }, []);
-
   // __________________________________________HANDLE Add ToDoObject_____________________________________
 
   const [input, setInput] = useState("");
@@ -84,41 +76,6 @@ export default function AddTodo() {
     setReminder((prevReminder) => !prevReminder);
   }
 
-  // async function handleAddTodo() {
-  //   //Create a new Todo-Object
-  //   const newTodo = {
-  //     date: new Date().toISOString(),
-  //     title: input,
-  //     task_id: uuidv4(),
-  //     has_reminder: reminder,
-  //   };
-  //   if (newTodo.title !== "") {
-  //     try {
-  //       // Fetch existing data from the API
-  //       const response = await fetch(
-  //         "https://api.npoint.io/3dbe9481cd6175f6ffd8"
-  //       );
-  //       const existingTodos = await response.json();
-  //       // Add new Todo to the existing list
-  //       const updatedTodos = [...existingTodos, newTodo];
-  //       // Send updated list back to the API
-  //       await fetch("https://api.npoint.io/3dbe9481cd6175f6ffd8", {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(updatedTodos),
-  //       });
-  //       // Reset Todo input
-  //       setInput("");
-  //     } catch (error) {
-  //       console.error("Error adding new todo:", error);
-  //     }
-  //   }
-  //   // Reset Todo input
-  //   setInput("");
-  // }
-
   async function handleAddTodo() {
     const newTodo = {
       date: new Date().toISOString(),
@@ -128,11 +85,15 @@ export default function AddTodo() {
     };
     if (newTodo.title !== "") {
       try {
-        const storedTodos = await DefaultPreference.get("todos");
-        const todos = storedTodos ? JSON.parse(storedTodos) : [];
-        const updatedTodos = [...todos, newTodo];
-        await DefaultPreference.set("todos", JSON.stringify(updatedTodos));
-        setInput("");
+        const storedTodos = await AsyncStorage.getItem("todos");
+        let todos = [];
+        if (storedTodos !== null) {
+          todos = JSON.parse(storedTodos);
+        }
+        todos.push(newTodo);
+        await AsyncStorage.setItem("todos", JSON.stringify(todos));
+        setInput(""); // Leeres Inputfeld zurücksetzen
+        //setUpdateList();
         Alert.alert("Success", "To-Do added successfully");
       } catch (error) {
         console.error("Error adding new todo:", error);

@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   buttonContainer: {
-    justifyContent: "center", //
+    justifyContent: "center",
     alignItems: "center",
   },
 });

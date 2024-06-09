@@ -105,7 +105,7 @@ export default function App() {
             screenOptions={{
               headerShown: false,
               tabBarStyle: {
-                height: 100, // Ändere die Höhe hier nach Bedarf
+                height: 100,
               },
             }}
           >

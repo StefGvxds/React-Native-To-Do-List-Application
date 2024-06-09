@@ -116,6 +116,7 @@ export default function App() {
                 tabBarIcon: ({ color, size }) => (
                   <MyPlusIcon size={45} color={color} plusIcon={plusIcon} />
                 ),
+                tabBarLabel: () => null,
               }}
             />
             <Tab.Screen
@@ -125,6 +126,7 @@ export default function App() {
                 tabBarIcon: ({ color, size }) => (
                   <MyListIcon size={45} color={color} listIcon={listIcon} />
                 ),
+                tabBarLabel: () => null,
               }}
             />
           </Tab.Navigator>

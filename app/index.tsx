@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LoginScreen from "./screens/LoginScreen";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
 import { Pressable, StyleSheet, Text } from "react-native";

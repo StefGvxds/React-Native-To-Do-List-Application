@@ -11,12 +11,7 @@ import {
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-//import notifee from "@notifee/react-native";
-
-// type AddTodoProps = {
-//   setUpdateList: () => void;
-// };
-// export default function AddTodo({ setUpdateList }: AddTodoProps) {
+import notifee from "@notifee/react-native";
 
 export default function AddTodo() {
   // __________________________________________HANDLE LOGIN Button_____________________________________
@@ -72,10 +67,6 @@ export default function AddTodo() {
     setInput((prevInput) => newInput);
   }
 
-  function handleReminder() {
-    setReminder((prevReminder) => !prevReminder);
-  }
-
   async function handleAddTodo() {
     const newTodo = {
       date: new Date().toISOString(),
@@ -92,8 +83,7 @@ export default function AddTodo() {
         }
         todos.push(newTodo);
         await AsyncStorage.setItem("todos", JSON.stringify(todos));
-        setInput(""); // Leeres Inputfeld zurücksetzen
-        //setUpdateList();
+        setInput("");
         Alert.alert("Success", "To-Do added successfully");
       } catch (error) {
         console.error("Error adding new todo:", error);
@@ -138,16 +128,13 @@ export default function AddTodo() {
     </View>
   );
 }
-//{/* TestButton */}
-//<View style={{ marginTop: 200 }}>
-//  <Button onPress={onDisplayNotification} title="Click Me" />
-//</View>
+
 //Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center", // Vertikal zentrieren
-    alignItems: "center", // Horizontal zentrieren
+    justifyContent: "center",
+    alignItems: "center",
   },
   textInput: {
     fontSize: 25,

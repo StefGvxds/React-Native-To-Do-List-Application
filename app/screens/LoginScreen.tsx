@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -73,8 +73,6 @@ export default function LoginScreen({
     } catch (error) {
       console.error("Error:", error);
     }
-
-    //setLoggedInStatus(true);
   }
 
   // __________________________________________HANDLE LOGIN Button_____________________________________
@@ -142,8 +140,8 @@ export default function LoginScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center", // Vertikal zentrieren
-    alignItems: "center", // Horizontal zentrieren
+    justifyContent: "center",
+    alignItems: "center",
   },
   textInput: {
     fontSize: 25,

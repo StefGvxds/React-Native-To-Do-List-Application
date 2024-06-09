@@ -11,7 +11,6 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-//import DefaultPreference from "react-native-default-preference";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import Checkbox from "expo-checkbox";
@@ -22,11 +21,6 @@ interface TodoItem {
   task_id: string;
   has_reminder: boolean;
 }
-
-// interface TodoListProps {
-//   updateList?: boolean;
-// }
-// export default function ToDoList({ updateList }: TodoListProps) {
 
 export default function ToDoList() {
   // __________________________________________HANDLE LOGIN Button_____________________________________
@@ -69,8 +63,7 @@ export default function ToDoList() {
       if (storedTodos !== null) {
         todos = JSON.parse(storedTodos);
       }
-      setData(todos); // Setzen der Daten sofort, um sicherzustellen, dass die UI aktualisiert wird
-      // Rest des Codes...
+      setData(todos); //
     } catch (error) {
       console.error("Error fetching or initializing todos:", error);
       handleLoading();
@@ -333,7 +326,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   buttonContainer: {
-    justifyContent: "center", // Vertikal zentrieren
-    alignItems: "center", // Horizontal zentrieren
+    justifyContent: "center", //
+    alignItems: "center",
   },
 });

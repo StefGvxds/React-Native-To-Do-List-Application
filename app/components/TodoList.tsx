@@ -6,6 +6,7 @@ import {
   StyleSheet,
   StatusBar,
   ActivityIndicator,
+  Button,
 } from "react-native";
 //import DefaultPreference from "react-native-default-preference";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -75,15 +76,50 @@ export default function ToDoList() {
     }, [])
   );
 
+  // __________________________________________Delete Item Component_____________________________________
+
+  async function handleDelete(taskId: string) {
+    try {
+      const storedTodos = await AsyncStorage.getItem("todos");
+      if (storedTodos !== null) {
+        const todos = JSON.parse(storedTodos);
+        const updatedTodos = todos.filter(
+          (todo: TodoItem) => todo.task_id !== taskId
+        );
+        await AsyncStorage.setItem("todos", JSON.stringify(updatedTodos));
+        setData(updatedTodos);
+      }
+    } catch (error) {
+      console.error("Error deleting todo:", error);
+    }
+  }
+
   // __________________________________________Rendering Item Component_____________________________________
 
   type ItemProps = {
     title: string;
+    onEdit: () => void;
+    onDelete: () => void;
   };
 
-  const Item = ({ title }: ItemProps) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
+  const Item = ({ title, onEdit, onDelete }: ItemProps) => (
+    <View
+      style={[
+        styles.item,
+        {
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "space-between",
+        },
+      ]}
+    >
+      <Text style={[styles.title, { marginRight: 10 }]}>{title}</Text>
+      <View style={{ flexDirection: "row" }}>
+        <Button title="Edit" onPress={onEdit} color="blue" />
+        <View style={{ width: 10 }} />
+        <Button title="Delete" onPress={onDelete} color="red" />
+      </View>
     </View>
   );
 
@@ -112,7 +148,13 @@ export default function ToDoList() {
       </View>
       <FlatList
         data={data}
-        renderItem={({ item }) => <Item title={item.title} />}
+        renderItem={({ item }) => (
+          <Item
+            title={item.title}
+            onEdit={() => console.log("Edit item with task_id:", item.task_id)}
+            onDelete={() => handleDelete(item.task_id)}
+          />
+        )}
         keyExtractor={(item) => item.task_id}
       />
     </View>

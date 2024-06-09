@@ -9,21 +9,30 @@ import {
   Platform,
 } from "react-native";
 
-export default function LoginScreen({ setLoggedInStatus }) {
+export default function LoginScreen({
+  setLoggedInStatus,
+}: {
+  setLoggedInStatus: (status: boolean) => void;
+}) {
   // __________________________________________HANDLE WEB Alerts_____________________________________
 
   //Check if OS === WEB to show Alerts to the WEB environment
-  const alertPolyfill = (title, description, options, extra) => {
+  const alertPolyfill = (
+    title: string,
+    description: string,
+    options: { text: string; onPress?: () => void; style?: string }[],
+    extra: any
+  ) => {
     const result = window.confirm(
       [title, description].filter(Boolean).join("\n")
     );
 
     if (result) {
       const confirmOption = options.find(({ style }) => style !== "cancel");
-      confirmOption && confirmOption.onPress();
+      confirmOption && confirmOption.onPress && confirmOption.onPress();
     } else {
       const cancelOption = options.find(({ style }) => style === "cancel");
-      cancelOption && cancelOption.onPress();
+      cancelOption && cancelOption.onPress && cancelOption.onPress();
     }
   };
   const alert = Platform.OS === "web" ? alertPolyfill : Alert.alert;
@@ -35,38 +44,37 @@ export default function LoginScreen({ setLoggedInStatus }) {
 
   //API
   const endpoint = "https://api.npoint.io/f74e690311e2654a5f8f";
-  // const { usernameAPI, passwordAPI } = endpoint;
 
   //Function to handle change Username-Input
-  function handleUsername(newUsername) {
+  function handleUsername(newUsername: string) {
     setUsername((prevUsername) => newUsername);
   }
 
   //Function to handle change Password-Input
-  function handlePassword(newPassword) {
+  function handlePassword(newPassword: string) {
     setPassword((prevPassword) => newPassword);
   }
 
   //Function to handle the login
   async function handleLogin() {
-    //   try {
-    //     const response = await fetch(endpoint, {
-    //       method: "GET",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     });
-    //     const data = await response.json();
-    //     if (data.username === username && data.password === password) {
-    //       setLoggedInStatus(true);
-    //     } else {
-    //       alert("Ooops!", "Invalid password or username", [{ text: "ok" }]);
-    //     }
-    //   } catch (error) {
-    //     console.error("Error:", error);
-    //   }
+    try {
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (data.username === username && data.password === password) {
+        setLoggedInStatus(true);
+      } else {
+        Alert.alert("Ooops!", "Invalid password or username", [{ text: "ok" }]);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
 
-    setLoggedInStatus(true);
+    //setLoggedInStatus(true);
   }
 
   // __________________________________________HANDLE LOGIN Button_____________________________________

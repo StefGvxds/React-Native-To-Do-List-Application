@@ -3,11 +3,52 @@ import LoginScreen from "./screens/LoginScreen";
 import React, { useState } from "react";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text, Image } from "react-native";
 
 //Create TAB
 const Tab = createBottomTabNavigator();
 
+//__________________________________________PLUS-Icon_____________________________________
+
+// myPlusIcon component with types
+interface MyPlusIconProps {
+  size: number;
+  color: string;
+  plusIcon?: any;
+}
+
+const MyListIcon: React.FC<MyListIconProps> = ({ size, color, listIcon }) => (
+  <Image
+    source={listIcon}
+    style={{
+      width: size,
+      height: size,
+      tintColor: color,
+      marginTop: 10,
+    }}
+  />
+);
+
+//__________________________________________LIST-Icon_____________________________________
+
+// myPlusIcon component with types
+interface MyListIconProps {
+  size: number;
+  color: string;
+  listIcon?: any;
+}
+
+const MyPlusIcon: React.FC<MyPlusIconProps> = ({ size, color, plusIcon }) => (
+  <Image
+    source={plusIcon}
+    style={{
+      width: size,
+      height: size,
+      tintColor: color,
+      marginTop: 10,
+    }}
+  />
+);
 export default function App() {
   //___________________________________HANDLE LOGIN______________________
 
@@ -39,6 +80,11 @@ export default function App() {
     backgroundColor: buttonStyleOnPress ? "blue" : "#546E7A",
   };
 
+  // __________________________________________Icons_____________________________________
+
+  const plusIcon = require("./icons/plus-64.png");
+  const listIcon = require("./icons/list-64.png");
+
   return (
     <>
       {!isLoggedIn ? (
@@ -55,9 +101,32 @@ export default function App() {
           >
             <Text style={styles.buttonText}>Logout</Text>
           </Pressable>
-          <Tab.Navigator screenOptions={{ headerShown: false }}>
-            <Tab.Screen name="AddTodo" component={AddTodo} />
-            <Tab.Screen name="TodoList" component={TodoList} />
+          <Tab.Navigator
+            screenOptions={{
+              headerShown: false,
+              tabBarStyle: {
+                height: 100, // Ändere die Höhe hier nach Bedarf
+              },
+            }}
+          >
+            <Tab.Screen
+              name="AddTodo"
+              component={AddTodo}
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <MyPlusIcon size={45} color={color} plusIcon={plusIcon} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="TodoList"
+              component={TodoList}
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <MyListIcon size={45} color={color} listIcon={listIcon} />
+                ),
+              }}
+            />
           </Tab.Navigator>
         </>
       )}
